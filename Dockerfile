@@ -33,6 +33,15 @@ FROM --platform=$BUILDPLATFORM base AS build
 COPY . .
 RUN mkdocs build
 
+# syntax=docker/dockerfile:1
+   
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+CMD ["node", "src/index.js"]
+EXPOSE 3000
+
 # Extract the static content from the build
 # and use a nginx image to serve the content
 FROM --platform=$TARGETPLATFORM nginx:alpine
